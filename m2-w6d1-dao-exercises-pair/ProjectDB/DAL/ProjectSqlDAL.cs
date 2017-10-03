@@ -12,7 +12,7 @@ namespace ProjectDB.DAL
     public class ProjectSqlDAL
     {
         private string connectionString;
-        private string getProjectSql = @"Select * from project";
+        private string getProjectSql = @"Select * from project order by project_id";
         private string assignEmployeeSql = @"insert into project_employee values (@project_id, @employee_id)";
         private string removeEmployeeSql = @"delete from project_employee where project_id = @project_id and employee_id = @employee_id";
         private string createProjectSql = @"insert into project values (@name, @from_date, @to_date)";

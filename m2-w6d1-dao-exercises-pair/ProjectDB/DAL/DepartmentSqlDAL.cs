@@ -12,7 +12,7 @@ namespace ProjectDB.DAL
     public class DepartmentSqlDAL
     {
         private string connectionString;
-        private const string getDepartmentSql = "select* from department";
+        private const string getDepartmentSql = "select* from department order by department_id";
         private string SQL_CreateDepartment = @"insert into department values (@name)";
         private string SQL_UpdateDepartment = @"update department set name = @name where department_id = @department_id";
         //where department_id = @department_id

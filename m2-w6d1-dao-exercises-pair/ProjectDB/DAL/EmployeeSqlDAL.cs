@@ -12,9 +12,9 @@ namespace ProjectDB.DAL
     public class EmployeeSqlDAL
     {
         private string connectionString;
-        private const string getEmployeeSql = @"Select * from employee";
-        private string getSpecificEmployeeSql = @"Select * from employee";
-        private string getProjectlessEmployees = @"select * from employee where employee_id not in (select employee_id from project_employee)";
+        private const string getEmployeeSql = @"Select * from employee order by employee_id";
+        private string getSpecificEmployeeSql = @"Select * from employee order by employee_id";
+        private string getProjectlessEmployees = @"select * from employee where employee_id not in (select employee_id from project_employee) order by employee_id";
 
         // Single Parameter Constructor
         public EmployeeSqlDAL(string dbConnectionString)
