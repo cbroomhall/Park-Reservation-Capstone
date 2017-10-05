@@ -1,6 +1,7 @@
 ﻿using ProjectDB.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace ProjectDB.DAL
 {
     public class DepartmentSqlDAL
     {
+
+        private const string getDepartmentsSql = "select * from department";
         private string connectionString;
         private const string getDepartmentSql = "select* from department order by department_id";
         private string SQL_CreateDepartment = @"insert into department values (@name)";
@@ -25,13 +28,18 @@ namespace ProjectDB.DAL
 
         public List<Department> GetDepartments()
         {
+<<<<<<< HEAD
             List<Department> department = new List<Department>();
+=======
+            List<Department> departments = new List<Department>();
+>>>>>>> f352e0e3bc069be361bcacae1573423e0ce7ebdb
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
+<<<<<<< HEAD
                     SqlCommand cmd = new SqlCommand(getDepartmentSql, conn);
                     SqlDataReader results = cmd.ExecuteReader();
 
@@ -42,11 +50,28 @@ namespace ProjectDB.DAL
                 }
                 }
             catch (SqlException)
+=======
+                    SqlCommand command = new SqlCommand(getDepartmentsSql, conn);
+                    SqlDataReader results = command.ExecuteReader();
+
+                    while(results.Read())
+                    {
+                        departments.Add(CreateDepartmentFromRow(results));
+                    }
+
+                }
+            }
+            catch (SqlException ex)
+>>>>>>> f352e0e3bc069be361bcacae1573423e0ce7ebdb
             {
                 throw;
             }
 
+<<<<<<< HEAD
             return department;
+=======
+            return departments;
+>>>>>>> f352e0e3bc069be361bcacae1573423e0ce7ebdb
         }
 
         public bool CreateDepartment(Department newDepartment)
@@ -94,14 +119,23 @@ namespace ProjectDB.DAL
             throw new NotImplementedException();
         }
 
+<<<<<<< HEAD
         //HELPER METHOD
+=======
+>>>>>>> f352e0e3bc069be361bcacae1573423e0ce7ebdb
         private Department CreateDepartmentFromRow(SqlDataReader results)
         {
             Department dept = new Department();
             dept.Id = Convert.ToInt32(results["department_id"]);
             dept.Name = Convert.ToString(results["name"]);
+<<<<<<< HEAD
 
             return dept;
         }
+=======
+            return dept;
+        }
+
+>>>>>>> f352e0e3bc069be361bcacae1573423e0ce7ebdb
     }
 }
