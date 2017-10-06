@@ -17,7 +17,9 @@ namespace ProjectDBTest.DAL
         private int projectId;
         private int employeeId;
         private int departmentId;
-         
+
+        private int projEmplTable_ProjectId;
+        private int projEmplTable_EmployeeId;
 
         [TestInitialize]
         public void Initialize()
@@ -39,7 +41,6 @@ namespace ProjectDBTest.DAL
                 cmd = new SqlCommand("INSERT INTO Employee VALUES ((SELECT department_id from department where name = 'ABC'), 'Harry', 'Potter', 'Wizard', '1980-01-01', 'M', '2017-01-01'); SELECT CAST(SCOPE_IDENTITY() as int);", conn);
                 employeeId = (int)cmd.ExecuteScalar();
                 
-
             }
         }
         [TestCleanup]
@@ -62,7 +63,18 @@ namespace ProjectDBTest.DAL
             ProjectSqlDAL projectDal = new ProjectSqlDAL(connectionString);
             bool result = projectDal.AssignEmployeeToProject(projectId, employeeId);
             Assert.AreEqual(true, result);
+            bool employeeAssigned = false;
 
+            List<Project> projectList = projectDal.GetAllProjects();
+            foreach(Project x in projectList)
+            {
+                if (x.ProjectId == projectId)
+                {
+                    employeeAssigned = true;
+                }
+            }
+
+            Assert.AreEqual(true, employeeAssigned);
         }
 
         [TestMethod]
