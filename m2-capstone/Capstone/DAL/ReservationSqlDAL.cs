@@ -11,8 +11,11 @@ namespace Capstone.DAL
 {
     public class ReservationSqlDAL
     {
-        private string getReservationSql = @"select * from site join reservation on site.site_id = reservation.site_id where campground_id = @campgroundId order by site.site_number";
-//        
+        //private string getReservationSql = @"select * from site join reservation on site.site_id = reservation.site_id where campground_id = @campgroundId order by site.site_number";
+        private string makeReservationSql = @"insert into reservation values 
+((select site_id from site where site_number = @siteNum and campground_id = @campgroundId), @reserveName, @arrival, @departure, default)";
+        private string getRezIdSql = @"select reservation_id from reservation where site_id = 
+(select site_id from site where site_number = @siteNum and campground_id = @campgroundId) and name = @reserveName and from_date = @arrival and to_date = @departure";
         private string connectionString;
 
         // Single Parameter Constructor
@@ -21,35 +24,81 @@ namespace Capstone.DAL
             connectionString = dbConnectionString;
         }
 
-        public List<Reservation> GetSites()
+        public int MakeReservation(string reserveName, int campgroundId, int siteNum, DateTime arrival, DateTime departure)
         {
-            List<Reservation> reservationList = new List<Reservation>();
-
+            int result = 0;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(getReservationSql, conn);
-                    //cmd.Parameters.AddWithValue("@campgroundId", campgroundId);
+                    SqlCommand cmd = new SqlCommand(makeReservationSql, conn);
+                    cmd.Parameters.AddWithValue("@siteNum", siteNum);
+                    cmd.Parameters.AddWithValue("@campgroundId", campgroundId);
+                    cmd.Parameters.AddWithValue("@reserveName", reserveName);
+                    cmd.Parameters.AddWithValue("@arrival", arrival);
+                    cmd.Parameters.AddWithValue("@departure", departure);
                     SqlDataReader results = cmd.ExecuteReader();
+                    
 
-                    while (results.Read())
-                    {
-                        reservationList.Add(CreateReservation(results));
-                    }
+                }
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(getRezIdSql, conn);
+                    cmd.Parameters.AddWithValue("@siteNum", siteNum);
+                    cmd.Parameters.AddWithValue("@campgroundId", campgroundId);
+                    cmd.Parameters.AddWithValue("@reserveName", reserveName);
+                    cmd.Parameters.AddWithValue("@arrival", arrival);
+                    cmd.Parameters.AddWithValue("@departure", departure);
+                    result = (int)cmd.ExecuteScalar();
                 }
             }
             catch (SqlException)
             {
                 throw;
             }
-            return reservationList;
+
+
+
+            return result;
         }
 
+
+        //public string GetReservation(int reservationId)
+        //{
+
+        //}
+        //public List<Reservation> GetSites()
+        //{
+        //    List<Reservation> reservationList = new List<Reservation>();
+
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+
+        //            SqlCommand cmd = new SqlCommand(getReservationSql, conn);
+        //            //cmd.Parameters.AddWithValue("@campgroundId", campgroundId);
+        //            SqlDataReader results = cmd.ExecuteReader();
+
+        //            while (results.Read())
+        //            {
+        //                reservationList.Add(CreateReservation(results));
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException)
+        //    {
+        //        throw;
+        //    }
+        //    return reservationList;
+        //}
+
         //HELPER METHOD
-        private Reservation CreateReservation(SqlDataReader results)
+        public Reservation CreateReservation(SqlDataReader results)
         {
             Reservation reservy = new Reservation();
 

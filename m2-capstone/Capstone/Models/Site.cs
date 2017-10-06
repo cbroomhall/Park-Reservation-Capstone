@@ -10,12 +10,13 @@ namespace Capstone.Models
     {
         public string CampgroundName { get; set; }
         public int SiteId { get; set; }
-        public int CampgroundId { get; set; }
+        //public int CampgroundId { get; set; }
         public int SiteNumber { get; set; }
         public int MaxOccupancy { get; set; }
         public int Accessible { get; set; }
         public int MaxRvLength { get; set; }
         public int Utilities { get; set; }
+        //public decimal DailyFee { get; set; }
 
 
 
@@ -23,9 +24,9 @@ namespace Capstone.Models
         {
             string result = "";
             
-            result += "  " + CampgroundName.PadRight(30) + SiteNumber.ToString().PadRight(5) 
-                + MaxOccupancy.ToString().PadRight(5) + HandyAx(Accessible).PadRight(5) 
-                + RV(MaxRvLength).PadRight(5) + Utility(Utilities);
+            result += "  " + SiteNumber.ToString().PadRight(10) 
+                + MaxOccupancy.ToString().PadRight(12) + HandyAx(Accessible).PadRight(15) 
+                + RV(MaxRvLength).PadRight(15) + Utility(Utilities).PadRight(12) + "\n";
             return result;
         }
 

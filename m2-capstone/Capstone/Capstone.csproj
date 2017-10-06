@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CampsiteReservationCLI.cs" />
+    <Compile Include="CapStringFormat.cs" />
     <Compile Include="CLIHelper.cs" />
     <Compile Include="DAL\CampgroundSqlDAL.cs" />
     <Compile Include="DAL\ParkSqlDAL.cs" />
