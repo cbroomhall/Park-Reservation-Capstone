@@ -44,7 +44,7 @@ namespace ProjectDBTest
         {
             DepartmentSqlDAL deptDAL = new DepartmentSqlDAL(connectionString);
             List<Department> depts = deptDAL.GetDepartments();
-            Assert.AreEqual(departmentId, depts[depts.Count - 1].Id);
+            Assert.AreEqual(departmentId, depts[depts.Count - 1].Id); 
             
         }
 

@@ -27,9 +27,10 @@ namespace Capstone
 
 
         //Method to insert line breaks in the long descriptions
-        public static string LineBreaks(string x)
+        public static string LineBreaks(string result)
         {
-            string result = x;
+            int lineCount = 0;
+            //string result = x;
             int charPerLIne = 80;
             for (int i = charPerLIne; i < result.Length; i += charPerLIne)
             {
@@ -38,8 +39,9 @@ namespace Capstone
                     char y = result[k];
                     if (y == ' ')
                     {
-                        result = result.Insert(k + 1, "\n");
+                        result = result.Insert(k + 1, "\n" + "  ");
                         i = k;
+                        lineCount++;
                         break;
                     }
                 }
@@ -47,23 +49,6 @@ namespace Capstone
             return result;
         }
 
-        //public static string LineBreaks(string x)
-        //{
-        //    string result = x;
-        //    int charPerLIne = 70;
-        //    for (int i = charPerLIne; i < result.Length; i++)
-        //    {
-
-        //            char y = result[i];
-        //            if (y == ' ')
-        //            {
-        //                result = result.Insert(k + 1, "\n");
-        //                i = k;
-        //                break;
-        //            }
-
-        //    }
-        //    return result;
-        //}
+        
     }
 }

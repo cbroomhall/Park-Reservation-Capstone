@@ -29,34 +29,79 @@ namespace Capstone
             while (!quit)
             {
                 Console.Clear();
-                Console.WriteLine("Select a Park for Further Details");
+                Console.WriteLine();
+                Console.WriteLine("  Select a Park for Further Details");
                 Console.Write(ListParks());
                 Console.WriteLine("\tQ)  Quit" + "\n");
+                Console.SetCursorPosition(3, parkList.Count + 4); 
                 string userChoice = Console.ReadLine();
+                bool validInput = Int32.TryParse(userChoice, out userNum);
                 Console.WriteLine();
 
                 if (userChoice.Equals("Q") || userChoice.Equals("q"))
                 {
                     quit = true;
+
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.WriteLine("\n \t   Thank you for using the National Parks System. Have a nice day!\n \n");
+                    Console.WriteLine(@"                                  # #### ####");
+                    Console.WriteLine(@"                                ### \/#|### |/####");
+                    Console.WriteLine(@"                               ##\/#/ \||/##/_/##/_#");
+                    Console.WriteLine(@"                             ###  \/###|/ \/ # ###");
+                    Console.WriteLine(@"                           ##_\_#\_\## | #/###_/_####");
+                    Console.WriteLine(@"                          ## #### # \ #| /  #### ##/##");
+                    Console.WriteLine(@"                           __#_--###`  |{,###---###-~");
+                    Console.WriteLine(@"                                     \ }{");
+                    Console.WriteLine(@"                                      }}{");
+                    Console.WriteLine(@"                                      }}{");
+                    Console.WriteLine(@"                                      {{}");
+                    Console.WriteLine(@"                                , -=-~{ .-^- _");
+                    Console.WriteLine(@"                                      `}");
+                    Console.WriteLine(@"                                       {");
+                    Console.ReadLine();
+                    Environment.Exit(0);
+
+                }
+                //else
+                //{
+                //    bool validInput = Int32.TryParse(userChoice, out userNum);
+
+                //    if (!validInput || userNum == 0 || userNum > parkList.Count)
+                //    {
+                //        Console.ForegroundColor = ConsoleColor.Red;
+                //        Console.WriteLine("Invalid input. Try Again.");
+                //        Console.ResetColor();
+                //    }
+                //    else
+                //    {
+
+                //        int parkIndex = userNum - 1;
+                //        int parkId = parkList[parkIndex].ParkId;
+                //        ParkMenu(parkId, parkIndex);
+
+                //    }
+                //}
+
+                else if ((!validInput || userNum == 0 || userNum > parkList.Count))
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    //Console.BackgroundColor = ConsoleColor.White;
+                    Console.Write("  ***INVALID INPUT.***  "); 
+                    Console.ResetColor();
+                    Console.WriteLine("Press enter and try again.");
+                    Console.ReadLine();
                 }
                 else
                 {
-                    bool validInput = Int32.TryParse(userChoice, out userNum);
 
-                    if (!validInput || userNum == 0 || userNum > parkList.Count)
-                    {
-                        Console.WriteLine("Invalid input. Try Again.");
-                    }
-                    else
-                    {
+                    int parkIndex = userNum - 1;
+                    int parkId = parkList[parkIndex].ParkId;
+                    Console.Clear();
+                    Console.WriteLine();
+                    ParkMenu(parkId, parkIndex);
 
-                        int parkIndex = userNum - 1;
-                        int parkId = parkList[parkIndex].ParkId;
-                        ParkMenu(parkId, parkIndex);
-
-                    }
                 }
-
+                
             }
         }
 
@@ -66,15 +111,19 @@ namespace Capstone
             bool quit = false;
             while (!quit)
             {
-                string message = "Select a Command\n\t1)  View Campgrounds\n\t2)  Search for a Reservation\n\t3)  Return to Previous Screen\n";
+                string message = "  Select a Command\n\t1)  View Campgrounds\n\t2)  Search for a Reservation\n\t3)  Return to Previous Screen\n\n";
                 int userNum = CLIHelper.GetInt(message, 1, 3);
+                //Console.SetCursorPosition(3, 13);
 
                 switch (userNum)
                 {
                     case 1:
+                        Console.Clear();
                         Console.WriteLine(ListCampgrounds(parkId, parkIndex));
+                        //ReservationMenu(parkId);
                         break;
                     case 2:
+                        Console.Clear();
                         Console.WriteLine(ListCampgrounds(parkId, parkIndex));
                         ReservationMenu(parkId);
                         break;
@@ -91,7 +140,7 @@ namespace Capstone
             while (!quit)
             {
                 Console.WriteLine();
-                int userNum = CLIHelper.GetInt("Select a Command\n\t1)  Search for available Reservation\n\t2)  Return to Previous Screen\n", 1, 2);
+                int userNum = CLIHelper.GetInt("  Select a Command\n\t1)  Search for available Reservation\n\t2)  Return to Previous Screen\n", 1, 2);
                 if (userNum == 1)
                 {
                     ReservationMenu2(parkId);
@@ -113,12 +162,7 @@ namespace Capstone
             Console.WriteLine();
             List<Site> possibleSites = new List<Site>();
 
-
-            if (userCampNum != 0)
-            {
-                ReservationSearch(parkId, campId);
-
-            }
+            ReservationSearch(parkId, campId);
         }
 
         private void ReservationSearch(int parkId, int campId)
@@ -136,7 +180,10 @@ namespace Capstone
 
                 if (!validDates)
                 {
-                    Console.WriteLine("Invalid Dates.  Try Again");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.Write("  ***INVALID DATES***  ");
+                    Console.ResetColor();
+                    Console.WriteLine(" Please try again");
                     Console.WriteLine();
                 }
                 else
@@ -197,7 +244,10 @@ namespace Capstone
                             if (validSiteChoice && !siteNumbers.Contains(siteChoice) && siteChoice != 0)
                             {
                                 validSiteChoice = false;
-                                Console.WriteLine("Not a valid Site Number. Try Again");
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.Write("***Not A Valid Site Number.*** ");
+                                Console.ResetColor();
+                                Console.WriteLine("Please try again");
                             }
                             else if (siteChoice != 0)
                             {
@@ -208,7 +258,7 @@ namespace Capstone
                                 ReservationSqlDAL rezDalObject = new ReservationSqlDAL(connectionString);
                                 int reservationId = rezDalObject.MakeReservation(reserveName, campId, siteChoice, arrival, departure);
                                 Console.WriteLine();
-                                Console.WriteLine("The reservation has been made and the confirmation ID is: " + reservationId);
+                                Console.WriteLine("The reservation has been made and your confirmation ID is: " + reservationId);
                                 Console.WriteLine();
                             }
                         }

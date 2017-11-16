@@ -18,7 +18,10 @@ namespace Capstone
             {
                 if (numberOfAttempts > 0)
                 {
-                    Console.WriteLine("Invalid date format. Please try again");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.Write("***Invalid date format.***  ");
+                    Console.ResetColor();
+                    Console.WriteLine(" Please try again");
                 }
 
                 Console.Write(message + " ");
@@ -55,7 +58,10 @@ namespace Capstone
             {
                 if (numberOfAttempts > 0)
                 {
-                    Console.WriteLine("Invalid format. Please try again");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("***INVALID FORMAT.***  ");
+                    Console.ResetColor();
+                    Console.WriteLine(" Please try again");
                 }
 
                 Console.Write(message + " ");
@@ -95,7 +101,10 @@ namespace Capstone
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input.  Answer Y?N");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.Write("INVALIDE INPUT.***  ");
+                    Console.ResetColor();
+                    Console.WriteLine(" Answer Y?N");
                 }
             }
 
